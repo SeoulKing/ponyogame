@@ -1,22 +1,28 @@
 const characterState = {
   affection: 50,
+  fullness: 100,
   mood: "보통",
   lastActiveTime: Date.now(),
 };
 
-// 시간에 따른 애정도 감소 설정
+// 시간에 따른 수치 변화 설정
 const TIME_SETTINGS = {
   decreaseInterval: 10000, // 10초마다 감소
-  decreaseAmount: 1,       // 한 번에 1씩 감소
+  affectionDecreaseAmount: 1,       // 애정도 한 번에 1씩 감소
+  fullnessDecreaseAmount: 2,        // 배부름 한 번에 2씩 감소
   maxOfflineHours: 24,     // 최대 24시간까지 오프라인 시간 계산
 };
 
 function renderStatus() {
   const affectionEl = document.getElementById("affection-value");
+  const fullnessEl = document.getElementById("fullness-value");
   const moodEl = document.getElementById("mood-value");
 
   const clampedAffection = Math.max(0, Math.min(100, characterState.affection));
+  const clampedFullness = Math.max(0, Math.min(100, characterState.fullness));
+  
   affectionEl.textContent = clampedAffection;
+  fullnessEl.textContent = clampedFullness;
   moodEl.textContent = characterState.mood;
 }
 
@@ -26,33 +32,51 @@ function showMessage(text) {
 }
 
 function updateMood() {
-  if (characterState.affection >= 80) {
+  // 배고픔과 애정도를 종합해서 기분 결정
+  if (characterState.fullness <= 20) {
+    characterState.mood = "매우 배고픔";
+  } else if (characterState.fullness <= 40) {
+    characterState.mood = "배고픔";
+  } else if (characterState.affection >= 80 && characterState.fullness >= 80) {
     characterState.mood = "행복";
   } else if (characterState.affection <= 20) {
     characterState.mood = "삐짐";
+  } else if (characterState.fullness <= 60) {
+    characterState.mood = "조금 배고픔";
   } else {
     characterState.mood = "보통";
   }
 }
 
 function decreaseAffectionOverTime() {
+  // 애정도 감소
   if (characterState.affection > 0) {
-    characterState.affection -= TIME_SETTINGS.decreaseAmount;
+    characterState.affection -= TIME_SETTINGS.affectionDecreaseAmount;
     characterState.affection = Math.max(0, characterState.affection);
-    
-    updateMood();
-    renderStatus();
-    saveStateToLocal();
-    
-    // 애정도가 떨어졌다는 메시지 표시 (가끔씩)
-    if (Math.random() < 0.3) { // 30% 확률로 메시지 표시
-      if (characterState.affection <= 10) {
-        showMessage("😢 너무 오랫동안 관심을 주지 않아서 슬퍼하고 있어요...");
-      } else if (characterState.affection <= 30) {
-        showMessage("😔 조금 외로워하는 것 같아요.");
-      } else {
-        showMessage("🕐 시간이 지나고 있어요...");
-      }
+  }
+  
+  // 배부름 감소 (시간이 지나면 배가 고파짐)
+  if (characterState.fullness > 0) {
+    characterState.fullness -= TIME_SETTINGS.fullnessDecreaseAmount;
+    characterState.fullness = Math.max(0, characterState.fullness);
+  }
+  
+  updateMood();
+  renderStatus();
+  saveStateToLocal();
+  
+  // 상태에 따른 메시지 표시 (가끔씩)
+  if (Math.random() < 0.3) { // 30% 확률로 메시지 표시
+    if (characterState.fullness <= 20) {
+      showMessage("😵 너무 배고파해요! 빨리 먹을 것을 주세요!");
+    } else if (characterState.fullness <= 40) {
+      showMessage("🍪 배가 고픈 것 같아요...");
+    } else if (characterState.affection <= 10) {
+      showMessage("😢 너무 오랫동안 관심을 주지 않아서 슬퍼하고 있어요...");
+    } else if (characterState.affection <= 30) {
+      showMessage("😔 조금 외로워하는 것 같아요.");
+    } else {
+      showMessage("🕐 시간이 지나고 있어요...");
     }
   }
 }
@@ -62,33 +86,49 @@ function calculateOfflineAffectionLoss(offlineTime) {
   const maxHours = TIME_SETTINGS.maxOfflineHours;
   const actualHours = Math.min(hoursOffline, maxHours);
   
-  // 1시간마다 2씩 감소
-  const lossAmount = Math.floor(actualHours * 2);
-  return lossAmount;
+  // 1시간마다 애정도 2씩 감소, 배부름 5씩 감소
+  const affectionLoss = Math.floor(actualHours * 2);
+  const fullnessDecrease = Math.floor(actualHours * 5);
+  
+  return { affectionLoss, fullnessDecrease };
 }
 
 function handleOfflineTime() {
   const currentTime = Date.now();
   const offlineTime = currentTime - characterState.lastActiveTime;
   
-  // 1분 이상 오프라인이었다면 애정도 감소
+  // 1분 이상 오프라인이었다면 수치 변화
   if (offlineTime > 60000) {
-    const lossAmount = calculateOfflineAffectionLoss(offlineTime);
+    const { affectionLoss, fullnessDecrease } = calculateOfflineAffectionLoss(offlineTime);
     
-    if (lossAmount > 0) {
-      characterState.affection -= lossAmount;
+    if (affectionLoss > 0 || fullnessDecrease > 0) {
+      characterState.affection -= affectionLoss;
       characterState.affection = Math.max(0, characterState.affection);
+      
+      characterState.fullness -= fullnessDecrease;
+      characterState.fullness = Math.max(0, characterState.fullness);
       
       updateMood();
       
       const hoursOffline = Math.floor(offlineTime / (1000 * 60 * 60));
       const minutesOffline = Math.floor((offlineTime % (1000 * 60 * 60)) / (1000 * 60));
       
+      let message = "";
       if (hoursOffline > 0) {
-        showMessage(`😔 ${hoursOffline}시간 ${minutesOffline}분 동안 혼자 있어서 애정도가 ${lossAmount} 감소했어요.`);
+        message = `😔 ${hoursOffline}시간 ${minutesOffline}분 동안 혼자 있어서`;
       } else {
-        showMessage(`😔 ${minutesOffline}분 동안 혼자 있어서 애정도가 ${lossAmount} 감소했어요.`);
+        message = `😔 ${minutesOffline}분 동안 혼자 있어서`;
       }
+      
+      if (affectionLoss > 0 && fullnessDecrease > 0) {
+        message += ` 애정도가 ${affectionLoss} 감소하고 배부름이 ${fullnessDecrease} 감소했어요.`;
+      } else if (affectionLoss > 0) {
+        message += ` 애정도가 ${affectionLoss} 감소했어요.`;
+      } else if (fullnessDecrease > 0) {
+        message += ` 배부름이 ${fullnessDecrease} 감소했어요.`;
+      }
+      
+      showMessage(message);
     }
   }
   
@@ -114,6 +154,12 @@ function handleAction(action) {
       characterState.affection += 8;
       msg = "진심으로 사랑한다고 말했어요. 애정도가 올랐습니다!";
       break;
+    case "snack":
+      characterState.fullness += 25;
+      characterState.fullness = Math.min(100, characterState.fullness);
+      characterState.affection += 3;
+      msg = "맛있는 과자를 주었어요! 배가 불러지고 애정도도 올랐습니다! 🍪";
+      break;
     case "tease":
       characterState.affection -= 15;
       msg = "장난으로 괴롭혔어요… 기분이 별로 같아요.";
@@ -133,6 +179,7 @@ function handleAction(action) {
 function saveStateToLocal() {
   const data = {
     affection: characterState.affection,
+    fullness: characterState.fullness,
     mood: characterState.mood,
     lastActiveTime: characterState.lastActiveTime
   };
@@ -145,6 +192,7 @@ function loadStateFromLocal() {
     try {
       const data = JSON.parse(saved);
       characterState.affection = data.affection || 50;
+      characterState.fullness = data.fullness || 100;
       characterState.mood = data.mood || "보통";
       characterState.lastActiveTime = data.lastActiveTime || Date.now();
     } catch (e) {
