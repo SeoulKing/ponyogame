@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>텍스트 기반 캐릭터 육성 게임</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>나만의 캐릭터 키우기</h1>
+  </header>
+
+  <section id="status-section">
+    <div class="status-line">
+      <strong>애정도:</strong> <span id="affection-value">50</span>%
+    </div>
+    <div class="status-line">
+      <strong>기분:</strong> <span id="mood-value">보통</span>
+    </div>
+  </section>
+
+  <section id="action-section">
+    <h2>무엇을 할까요?</h2>
+    <button class="action-btn" data-action="pet">1. 쓰다듬기</button>
+    <button class="action-btn" data-action="kiss">2. 뽀뽀해주기</button>
+    <button class="action-btn" data-action="love">3. 사랑한다고 말하기</button>
+    <button class="action-btn" data-action="tease">4. 괴롭히기</button>
+  </section>
+
+  <section id="message-section">
+    <p id="result-message">무엇을 선택하세요?</p>
+  </section>
+
+  <script src="game.js"></script>
+</body>
+</html>
