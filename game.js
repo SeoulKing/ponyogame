@@ -6,7 +6,7 @@ const characterState = {
 
 // 시간에 따른 애정도 감소 설정
 const TIME_SETTINGS = {
-  decreaseInterval: 30000, // 30초마다 감소
+  decreaseInterval: 10000, // 10초마다 감소
   decreaseAmount: 1,       // 한 번에 1씩 감소
   maxOfflineHours: 24,     // 최대 24시간까지 오프라인 시간 계산
 };
