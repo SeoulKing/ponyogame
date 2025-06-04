@@ -34,17 +34,17 @@ function showMessage(text) {
 function updateMood() {
   // 배고픔과 애정도를 종합해서 기분 결정
   if (characterState.fullness <= 20) {
-    characterState.mood = "매우 배고픔";
+    characterState.mood = "😵 매우 배고픔";
   } else if (characterState.fullness <= 40) {
-    characterState.mood = "배고픔";
+    characterState.mood = "😋 배고픔";
   } else if (characterState.affection >= 80 && characterState.fullness >= 80) {
-    characterState.mood = "행복";
+    characterState.mood = "😊 행복";
   } else if (characterState.affection <= 20) {
-    characterState.mood = "삐짐";
+    characterState.mood = "😤 삐짐";
   } else if (characterState.fullness <= 60) {
-    characterState.mood = "조금 배고픔";
+    characterState.mood = "🍪 조금 배고픔";
   } else {
-    characterState.mood = "보통";
+    characterState.mood = "😐 보통";
   }
 }
 
