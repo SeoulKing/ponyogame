@@ -23,13 +23,37 @@
     </div>
   </section>
 
+  <section id="wallet-section">
+    <div class="status-line">
+      <strong>💰 코인:</strong> <span id="coin-value">10</span>개
+    </div>
+  </section>
+
+  <section id="inventory-section">
+    <h2>📦 인벤토리</h2>
+    <div class="inventory-grid">
+      <div class="inventory-item">
+        <strong>🍪 과자:</strong> <span id="snack-count">0</span>개
+      </div>
+    </div>
+  </section>
+
   <section id="action-section">
     <h2>무엇을 할까요?</h2>
     <button class="action-btn" data-action="pet">1. 쓰다듬기</button>
     <button class="action-btn" data-action="kiss">2. 뽀뽀해주기</button>
     <button class="action-btn" data-action="love">3. 사랑한다고 말하기</button>
-    <button class="action-btn" data-action="snack">4. 과자주기</button>
+    <button class="action-btn" data-action="use-snack">4. 과자주기 (인벤토리)</button>
     <button class="action-btn" data-action="tease">5. 괴롭히기</button>
+  </section>
+
+  <section id="shop-section">
+    <h2>🏪 상점</h2>
+    <div class="shop-item">
+      <span>🍪 과자</span>
+      <span>1💰</span>
+      <button class="shop-btn" data-item="snack" data-price="1">구매</button>
+    </div>
   </section>
 
   <section id="message-section">

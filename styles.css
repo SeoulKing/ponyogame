@@ -35,6 +35,85 @@ header h1 {
   margin-bottom: 8px;
 }
 
+#wallet-section {
+  width: 100%;
+  max-width: 400px;
+  background-color: #f0f8ff;
+  border: 2px solid #b0d4f1;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+#inventory-section {
+  width: 100%;
+  max-width: 400px;
+  background-color: #f5f5dc;
+  border: 2px solid #d3d3d3;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+#inventory-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  color: #654;
+}
+.inventory-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.inventory-item {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  min-width: 120px;
+}
+
+#shop-section {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffe4e1;
+  border: 2px solid #ffb6c1;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+#shop-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  color: #8b4513;
+}
+.shop-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+.shop-btn {
+  padding: 4px 12px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #32cd32;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.shop-btn:hover {
+  background-color: #228b22;
+}
+.shop-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
 #action-section {
   width: 100%;
   max-width: 400px;
