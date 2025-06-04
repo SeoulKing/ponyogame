@@ -17,6 +17,77 @@ const TIME_SETTINGS = {
   maxOfflineHours: 24,     // 최대 24시간까지 오프라인 시간 계산
 };
 
+function updateStatusMessage() {
+  const statusMessageEl = document.getElementById("status-message");
+  let message = "";
+
+  // 배고픔이 심한 경우
+  if (characterState.fullness <= 20) {
+    const hungerMessages = [
+      "배고파요... 뭔가 주세요...",
+      "꼬르륵... 배가 너무 고파요!",
+      "과자... 과자는 없나요...?",
+      "먹을 것이 그리워요 ㅠㅠ"
+    ];
+    message = hungerMessages[Math.floor(Math.random() * hungerMessages.length)];
+  }
+  // 애정도가 낮은 경우
+  else if (characterState.affection <= 20) {
+    const sadMessages = [
+      "외로워요... 관심을 주세요",
+      "왜 저를 돌봐주지 않나요?",
+      "삐짐... 더 이상 말 안 할 거예요",
+      "슬퍼요... 혼자는 싫어요"
+    ];
+    message = sadMessages[Math.floor(Math.random() * sadMessages.length)];
+  }
+  // 행복한 경우
+  else if (characterState.affection >= 80 && characterState.fullness >= 80) {
+    const happyMessages = [
+      "정말 행복해요! 감사해요~",
+      "최고예요! 더 놀아요!",
+      "사랑해요! 💕",
+      "이런 기분 처음이에요!",
+      "오늘 정말 좋은 날이네요!"
+    ];
+    message = happyMessages[Math.floor(Math.random() * happyMessages.length)];
+  }
+  // 배부른 경우
+  else if (characterState.fullness >= 90) {
+    const fullMessages = [
+      "아, 배불러요~ 맛있었어요!",
+      "더 이상 못 먹겠어요...",
+      "과자가 정말 달콤했어요!",
+      "포만감이 느껴져요~"
+    ];
+    message = fullMessages[Math.floor(Math.random() * fullMessages.length)];
+  }
+  // 애정도가 높은 경우
+  else if (characterState.affection >= 60) {
+    const contentMessages = [
+      "오늘도 함께해서 즐거워요!",
+      "당신과 있으면 편안해요",
+      "좋은 시간을 보내고 있어요",
+      "앞으로도 잘 부탁드려요~",
+      "평온한 하루네요"
+    ];
+    message = contentMessages[Math.floor(Math.random() * contentMessages.length)];
+  }
+  // 일반적인 경우
+  else {
+    const normalMessages = [
+      "오늘은 어떤 일이 일어날까요?",
+      "평범한 하루를 보내고 있어요",
+      "무엇을 하며 놀까요?",
+      "시간이 천천히 흘러가네요",
+      "잠깐, 뭔가 하고 싶은데..."
+    ];
+    message = normalMessages[Math.floor(Math.random() * normalMessages.length)];
+  }
+
+  statusMessageEl.textContent = message;
+}
+
 function renderStatus() {
   const affectionEl = document.getElementById("affection-value");
   const fullnessEl = document.getElementById("fullness-value");
@@ -35,6 +106,11 @@ function renderStatus() {
   
   // 상점 버튼 상태 업데이트
   updateShopButtons();
+  
+  // 상태 메시지 업데이트 (30% 확률로만 변경)
+  if (Math.random() < 0.3) {
+    updateStatusMessage();
+  }
 }
 
 function showMessage(text) {
