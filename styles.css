@@ -59,44 +59,49 @@ header h1 {
   font-size: 0.9rem;
   color: #555;
   margin: 0;
+  text-align: center;
 }
 
 #wallet-section {
-  width: 100%;
-  max-width: 400px;
+  flex: 1;
   background-color: #f0f8ff;
   border: 2px solid #b0d4f1;
   border-radius: 8px;
   padding: 8px 12px;
-  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.wallet-amount {
+  font-size: 1rem;
+  color: #2c5aa0;
+  font-weight: bold;
 }
 
 #inventory-section {
-  width: 100%;
-  max-width: 400px;
+  flex: 1;
   background-color: #f5f5dc;
   border: 2px solid #d3d3d3;
   border-radius: 8px;
   padding: 8px 12px;
-  margin-bottom: 8px;
-}
-#inventory-section h2 {
-  font-size: 1rem;
-  margin-bottom: 6px;
-  color: #654;
 }
 .inventory-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
 }
 .inventory-item {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 6px;
-  min-width: 100px;
-  font-size: 0.9rem;
+  padding: 4px 6px;
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 #shop-section {
@@ -173,6 +178,14 @@ header h1 {
   background-color: #83aaff;
 }
 
+.info-row {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
 @media (max-width: 500px) {
   body {
     padding: 4px;
@@ -189,10 +202,26 @@ header h1 {
   .status-line {
     font-size: 0.9rem;
   }
-  #status-section, #wallet-section, #inventory-section, 
-  #action-section, #shop-section, #message-section {
+  #status-section, #action-section, #shop-section, #message-section {
     margin-bottom: 6px;
     padding: 6px 10px;
+  }
+  .info-row {
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  #wallet-section, #inventory-section {
+    padding: 6px 8px;
+  }
+  .section-title {
+    font-size: 0.8rem;
+  }
+  .wallet-amount {
+    font-size: 0.9rem;
+  }
+  .inventory-item {
+    font-size: 0.75rem;
+    padding: 3px 5px;
   }
   .character-message {
     font-size: 0.8rem;

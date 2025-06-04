@@ -69,7 +69,8 @@ function updateStatusMessage() {
       "당신과 있으면 편안해요",
       "좋은 시간을 보내고 있어요",
       "앞으로도 잘 부탁드려요~",
-      "평온한 하루네요"
+      "평온한 하루네요",
+      "서경아 사랑해"
     ];
     message = contentMessages[Math.floor(Math.random() * contentMessages.length)];
   }
@@ -79,8 +80,8 @@ function updateStatusMessage() {
       "오늘은 어떤 일이 일어날까요?",
       "평범한 하루를 보내고 있어요",
       "무엇을 하며 놀까요?",
-      "시간이 천천히 흘러가네요",
-      "잠깐, 뭔가 하고 싶은데..."
+      "잠깐, 뭔가 하고 싶은데...",
+      "애기야 보고시퍼!"
     ];
     message = normalMessages[Math.floor(Math.random() * normalMessages.length)];
   }
